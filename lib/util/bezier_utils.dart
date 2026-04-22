@@ -3,8 +3,6 @@ import 'package:pathplanner/util/wpimath/geometry.dart';
 import 'package:vector_math/vector_math.dart';
 
 class BezierUtils {
-
-
   static Vector2 getCubicBezierNormal(double t, Waypoint pointA, Waypoint pointB) {
     Vector2 p0 = translationToVector(pointA.anchor);
     Vector2 p1 = translationToVector(pointA.nextControl!);
@@ -86,32 +84,5 @@ class BezierUtils {
 
   static Translation2d vectorToTranslation(Vector2 vector){
     return Translation2d(vector.x, vector.y);
-  }
-
-
-  static double solveG2ControlMagnitude({
-    required Translation2d p3,
-    required Translation2d p2,
-    required Translation2d p4,
-    bool reverse = false,
-  }) {
-    final vp3 = translationToVector(p3);
-    final vp2 = translationToVector(p2);
-    final vp4 = translationToVector(p4);
-
-    final r2 = (vp4 - vp3).length; // seg2 handle length (known, just moved)
-    final r1 = (vp2 - vp3).length; // seg1 handle length (known, just moved)
-
-    if (!reverse) {
-      // p4 moved → solve magnitude of p1 to match curvature
-      // κ matching: m = r2² / r1
-      if (r1 == 0.0) return 0.0;
-      return (r2 * r2) / r1;
-    } else {
-      // p2 moved → solve magnitude of p4 to match curvature
-      // κ matching: m = r1² / r2
-      if (r2 == 0.0) return 0.0;
-      return (r1 * r1) / r2;
-    }
   }
 }
